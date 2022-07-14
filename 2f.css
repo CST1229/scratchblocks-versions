@@ -1,0 +1,91 @@
+/* Styles for flat 2.0 style */
+
+/* Basic scratchblocks shape */
+.s2flat .sb-bevel { /* Remove shading on blocks */
+	filter: none; 
+	/* Outline too */
+	stroke: #00000033;
+	stroke-width: 1.5px;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+}
+.s2flat .sb-input { /* Remove shading on inputs */
+	filter: none;
+	/* Outline too */
+	stroke: #00000033;
+	stroke-width: 1.5px;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+}
+.s2flat .sb-label { /* Change font and text size */
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 9pt;
+	font-weight: 500;
+
+}
+.s2flat .sb-literal-string, .s2flat .sb-literal-number { /* Smaller font and a different color in inputs */
+	fill: #575e75;
+	font-size: 8.5pt;
+}
+.s2flat .sb-input-boolean > .sb-darker { /* Empty boolean inputs */
+	filter: none;
+	stroke: none;
+	fill: #00000027 !important;
+}
+
+/* Dropdowns */
+.s2flat .sb-input-dropdown > .sb-darker { /* Undarken square dropdowns */
+	fill: none;
+}
+.s2flat .sb-literal-dropdown + polygon, .s2flat .sb-literal-number-dropdown + polygon { /* Whiten dropdown arrows */
+	fill: white;
+	opacity: 1;
+}
+.s2flat .sb-literal-number-dropdown, .s2flat .sb-literal-dropdown { /* Whiten dropdown text and make it smaller */
+	fill: white;
+	font-size: 8.5pt;
+}
+.s2flat .sb-input-number-dropdown { /* Un-whiten and darken round dropdowns */
+	fill: #00000022;
+}
+
+/* Comments */
+.s2flat .sb-comment { /* Different colors and smaller outline */
+	fill: #ffffa5;
+	stroke: #d0d1d2;
+	stroke-width: 1px;
+}
+.s2flat .sb-comment-line { /* Change the line color */
+	fill: #ffff80;
+	stroke-width: 1px;
+}
+.s2flat .sb-comment-label { /* Change the font color */
+	font: 400 10pt Helevetica Neue, Helvetica, sans-serif;
+	fill: #000;
+	word-spacing: 0;
+}
+
+/* Default block colors */
+.s2flat .sb-motion {fill: #4c97ff; stroke: #3373cc;}
+.s2flat .sb-looks {fill: #9966FF; stroke: #774dcb;}
+.s2flat .sb-sound {fill: #CF63CF; stroke: #bd42bd;}
+.s2flat .sb-events {fill: #FFBF00; stroke: #cc9900;}
+.s2flat .sb-control {fill: #FFAB19; stroke: #cf8b17;}
+.s2flat .sb-sensing {fill: #5CB1D6; stroke: #2e8eb8;}
+.s2flat .sb-operators {fill: #59C059; stroke: #389438;}
+.s2flat .sb-variables {fill: #FF8C1A; stroke: #db6e00;}
+.s2flat .sb-list {fill: #FF661A; stroke: #e64d00;}
+.s2flat .sb-custom, .s2flat .sb-define-hat-cap, .s2flat .sb-custom-arg {fill: #FF6680; stroke: #ff3355;}
+.s2flat .sb-label + g .sb-outline {fill: #FF4D6A; stroke: #ff3355;}
+.s2flat .sb-pen, .s2flat .sb-extension {fill: #0FBD8C; stroke: #0b8e69;}
+.s2flat .sb-obsolete {fill: #ED4242; stroke: #ca2b2b;}
+.s2flat .sb-grey {fill: #BFBFBF; stroke: #909090;}
+
+/* Icons */
+.s2flat #greenFlag {
+	fill: #4CBF56;
+	stroke: #45993D;
+	stroke-width: 1px;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}

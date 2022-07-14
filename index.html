@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			:root, body {
+				font-family: system-ui, sans-serif;
+				height: 100%;
+				box-sizing: border-box;
+				position: relative;
+			}
+			.output {
+				padding-bottom: 4px;
+				display: inline-block;
+			}
+			#s3b-iframe {
+				border: none;
+			}
+			#internal {
+				position: fixed;
+				left: 200vw;
+
+				overflow: visible;
+				width: 1000vw;
+			}
+
+			.columns {
+				padding: 10px;
+				box-sizing: border-box;
+				width: 100%;
+				height: 100%;
+
+				display: grid;
+				grid-template-columns: 50% 50%;
+				grid-template-rows: auto;
+			}
+
+			h1 {
+				margin-top: 0;
+				margin-bottom: 0;
+			}
+
+			.column {
+				width: 100%;
+				height: 100%;
+
+				overflow: hidden;
+
+				text-align: left;
+				border-collapse: collapse;
+				border: none;
+
+				box-sizing: border-box;
+				padding: 5px;
+
+				display: flex;
+				flex-direction: column;
+			}
+
+			textarea {
+				resize: none;
+			}
+
+			body, td {
+				padding: 15px;
+				margin: 0;
+			}
+			
+			.hidden {
+				display: none;
+			}
+
+			#style-select {
+				margin-bottom: 5px;
+			}
+			#input {
+				flex-grow: 1;
+			}
+			#output-div {
+				width: 100%;
+				overflow: auto;
+				padding: 3px;
+			}
+			#output {
+				max-width: 100%;
+			}
+
+			p {
+				margin-top: 0;
+			}
+		</style>
+		<style id="s2fStyles">
+			/* Styles for flat 2.0 style */
+			
+			/* Basic scratchblocks shape */
+			.sb-bevel { /* Remove shading on blocks */
+				filter: none; 
+				/* Outline too */
+				stroke: #00000033;
+				stroke-width: 1.5px;
+				stroke-linejoin: round;
+				stroke-linecap: round;
+			}
+			.sb-input { /* Remove shading on inputs */
+				filter: none;
+				/* Outline too */
+				stroke: #00000033;
+				stroke-width: 1.5px;
+				stroke-linejoin: round;
+				stroke-linecap: round;
+			}
+			.sb-label { /* Change font and text size */
+				font-family: "Helvetica Neue", Helvetica, sans-serif;
+				font-size: 9pt;
+				font-weight: 500;
+
+			}
+			.sb-literal-string, .sb-literal-number { /* Smaller font and a different color in inputs */
+				fill: #575e75;
+				font-size: 8.5pt;
+			}
+			.sb-input-boolean > .sb-darker { /* Empty boolean inputs */
+				filter: none;
+				stroke: none;
+				fill: #00000027 !important;
+			}
+
+			/* Dropdowns */
+			.sb-input-dropdown > .sb-darker { /* Undarken square dropdowns */
+				fill: none;
+			}
+			.sb-literal-dropdown + polygon, .sb-literal-number-dropdown + polygon { /* Whiten dropdown arrows */
+				fill: white;
+				opacity: 1;
+			}
+			.sb-literal-number-dropdown, .sb-literal-dropdown { /* Whiten dropdown text and make it smaller */
+				fill: white;
+				font-size: 8.5pt;
+			}
+			.sb-input-number-dropdown { /* Un-whiten and darken round dropdowns */
+				fill: #00000022;
+			}
+
+			/* Comments */
+			.sb-comment { /* Different colors and smaller outline */
+				fill: #ffffa5;
+				stroke: #d0d1d2;
+				stroke-width: 1px;
+			}
+			.sb-comment-line { /* Change the line color */
+				fill: #ffff80;
+				stroke-width: 1px;
+			}
+			.sb-comment-label { /* Change the font color */
+				font: 400 10pt Helevetica Neue, Helvetica, sans-serif;
+				fill: #000;
+				word-spacing: 0;
+			}
+
+			/* Default block colors */
+			.sb-motion {fill: #4c97ff; stroke: #3373cc;}
+			.sb-looks {fill: #9966FF; stroke: #774dcb;}
+			.sb-sound {fill: #CF63CF; stroke: #bd42bd;}
+			.sb-events {fill: #FFBF00; stroke: #cc9900;}
+			.sb-control {fill: #FFAB19; stroke: #cf8b17;}
+			.sb-sensing {fill: #5CB1D6; stroke: #2e8eb8;}
+			.sb-operators {fill: #59C059; stroke: #389438;}
+			.sb-variables {fill: #FF8C1A; stroke: #db6e00;}
+			.sb-list {fill: #FF661A; stroke: #e64d00;}
+			.sb-custom, .sb-define-hat-cap, .sb-custom-arg {fill: #FF6680; stroke: #ff3355;}
+			.sb-label + g .sb-outline {fill: #FF4D6A; stroke: #ff3355;}
+			.sb-pen, .sb-extension {fill: #0FBD8C; stroke: #0b8e69;}
+			.sb-obsolete {fill: #ED4242; stroke: #ca2b2b;}
+			.sb-grey {fill: #BFBFBF; stroke: #909090;}
+
+			/* Icons */
+			#greenFlag {
+				fill: #4CBF56;
+				stroke: #45993D;
+				stroke-width: 1px;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="scratchblocks/1.4/blocksplugin.js"></script>
+		<script>
+			window.scratchblocks1 = scratchBlocksPlugin;
+			delete scratchBlocksPlugin;
+		</script>
+		<script src="scratchblocks/3.6.0/scratchblocks.min.js"></script>
+		<script>
+			window.scratchblocks360 = scratchblocks;
+			delete scratchblocks;
+		</script>
+		<script src="scratchblocks/s3blocks.min.js"></script>
+		<script>
+			window.s3blocks = scratchblocks;
+			delete scratchblocks;
+			
+			// Remove styles created by s3blocks and store them
+			// so we can put them in the iframe
+			window._s3blocksStyleEl = document.querySelector("head > style:last-child");
+			_s3blocksStyleEl.remove();
+			window.s3blocksStyle = _s3blocksStyleEl.textContent;
+		</script>
+		
+		<script src=
+		"https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js">
+		</script>
+		
+		<div id="internal">
+			<pre class="output blocks1"></pre>
+			<iframe id="s3b-iframe" src="about:blank" width="0" height="0"></iframe>
+		</div>
+
+		<!-- ---------------------------------------- -->
+
+		<div class="columns">
+			<div class="column">
+				<p>
+					(right click -> Copy Image to copy)
+					<br />
+					<label>
+						<input type="checkbox" id="white-bg">
+						White background (for copying on Firefox on Windows)
+					</label>
+				</p>
+
+				<div id="output-div">
+					<img id="output">
+				</div>
+			</div>
+			<div class="column">
+				<select id="style-select">
+					<option value="s1">Scratch 1.4 (by JSO)</option>
+					<option value="s2">Scratch 2.0 (by tjvr)</option>
+					<option value="s3">Scratch 3.0 (by tjvr)</option>
+					<option value="s3b">s3blocks (by NitroCipher)</option>
+					<option value="s2f">Scratch 2.0 (3.0-styled; userstyle made by CST1229)</option>
+				</select>
+				<textarea id="input"></textarea>
+			</div>
+		</div>
+
+		<script src="s3blocks.js"></script>
+		<script src="index.js"></script>
+	</body>
+</html>
